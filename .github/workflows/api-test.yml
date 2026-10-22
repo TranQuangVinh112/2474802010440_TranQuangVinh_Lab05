@@ -29,11 +29,18 @@ jobs:
         run: |
           node -e "const fs=require('fs'); const p='ReqRes_Environment.json'; const e=JSON.parse(fs.readFileSync(p,'utf8')); const v=(e.values||[]).find(x=>x.key==='apiKey'); if(!v) throw new Error('apiKey variable not found'); v.value=process.env.REQRES_API_KEY || ''; fs.writeFileSync(p,JSON.stringify(e,null,2));"
 
+      - name: Check CSV data
+        run: |
+          echo "=== users.csv content ==="
+          cat users.csv
+          echo "=== Check CSV headers ==="
+          head -n 1 users.csv
+
       - name: Run API tests
         run: |
           newman run ReqRes_Collection.json \
             -e ReqRes_Environment.json \
-            -d users.csv \
+            --iteration-data users.csv \
             --reporters cli,htmlextra \
             --reporter-htmlextra-export report.html
 
