@@ -1,3 +1,4 @@
+
 name: API Availability Monitor
 
 on:
@@ -21,5 +22,13 @@ jobs:
       - name: Install Newman
         run: npm install -g newman
 
+      - name: Check Monitor Collection
+        run: test -f Monitor_Collection.json
+
       - name: Run Monitor
-        run: newman run Monitor_Collection.json
+        env:
+          REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
+        run: |
+          newman run Monitor_Collection.json \
+            --env-var "apiKey=$REQRES_API_KEY" \
+            --reporters cli
