@@ -1,37 +1,61 @@
-name: API Testing Pipeline
+
+name: API Tests
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
+  workflow_dispatch:
 
 jobs:
   api-test:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Install Node.js
-        uses: actions/setup-node@v3
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: 20
 
-      - name: Install Newman & Reporter
+      - name: Install Newman
+        run: npm install -g newman newman-reporter-htmlextra
+
+      - name: Inject API key
+        env:
+          REQRES_API_KEY: ${{ secrets.REQRES_API_KEY }}
         run: |
-          npm install -g newman
-          npm install -g newman-reporter-htmlextra
+          node -e "
+          const fs = require('fs');
+          const p = 'ReqRes_Environment.json';
+          const e = JSON.parse(fs.readFileSync(p, 'utf8'));
+          const v = (e.values || []).find(x => x.key === 'apiKey');
+          if (!v) throw new Error('apiKey variable not found');
+          v.value = process.env.REQRES_API_KEY || '';
+          fs.writeFileSync(p, JSON.stringify(e, null, 2));
+          "
 
-      - name: Run API Tests with Newman
+      - name: Check CSV data
+        run: |
+          echo "=== users.csv ==="
+          cat users.csv
+          echo "=== CSV headers ==="
+          head -n 1 users.csv
+
+      - name: Run API tests
         run: |
           newman run ReqRes_Collection.json \
             -e ReqRes_Environment.json \
-            -d users.csv \
+            --iteration-data users.csv \
             --reporters cli,htmlextra \
             --reporter-htmlextra-export report.html
 
-      - name: Upload HTML Report
-        uses: actions/upload-artifact@v3
+      - name: Upload HTML report
         if: always()
+        uses: actions/upload-artifact@v4
         with:
           name: api-test-report
           path: report.html
+          if-no-files-found: warn
