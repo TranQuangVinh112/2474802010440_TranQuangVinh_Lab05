@@ -1,34 +1,34 @@
 {
-	"id": "5cffa65f-2954-44be-b6b4-9f935b887626",
-	"name": "2474802010440_TranQuangVinh_ReqRes_Env",
-	"values": [
-		{
-			"key": "baseUrl",
-			"value": "",
-			"type": "default",
-			"enabled": true
-		},
-		{
-			"key": "userId",
-			"value": "",
-			"type": "default",
-			"enabled": true
-		},
-		{
-			"key": "userToken",
-			"value": "",
-			"type": "default",
-			"enabled": true
-		},
-		{
-			"key": "apiKey",
-			"value": "",
-			"type": "default",
-			"enabled": true
-		}
-	],
-	"color": null,
-	"_postman_variable_scope": "environment",
-	"_postman_exported_at": "2026-10-22T07:50:27.079Z",
-	"_postman_exported_using": "Postman/12.33.3-261022-0328"
+  "id": "5cffa65f-2954-44be-b6b4-9f935b887626",
+  "name": "2474802010440_TranQuangVinh_ReqRes_Env",
+  "values": [
+    {
+      "key": "baseUrl",
+      "value": "https://reqres.in",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "userId",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "userToken",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    },
+    {
+      "key": "apiKey",
+      "value": "",
+      "type": "default",
+      "enabled": true
+    }
+  ],
+  "color": null,
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2026-10-22T07:50:27.079Z",
+  "_postman_exported_using": "Postman/12.33.3-261022-0328"
 }
