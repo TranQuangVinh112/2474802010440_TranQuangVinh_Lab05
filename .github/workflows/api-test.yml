@@ -37,9 +37,15 @@ jobs:
           fs.writeFileSync(p, JSON.stringify(e, null, 2));
           "
 
+      - name: Check collection and environment
+        run: |
+          test -f ReqRes__Collection.json
+          test -f ReqRes_Environment.json
+          echo "Collection and Environment files found."
+
       - name: Run API tests
         run: |
-          newman run ReqRes_Collection.json \
+          newman run ReqRes__Collection.json \
             -e ReqRes_Environment.json \
             --reporters cli,htmlextra \
             --reporter-htmlextra-export report.html
